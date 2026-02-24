@@ -4,7 +4,41 @@ ANA BOT DOSYASI - PROFESYONEL VERSİYON
 Gelişmiş hata yönetimi, loglama ve optimizasyon
 Tüm modüller entegre edilmiştir
 """
+import datetime
+import time
+import os
+import sys
 
+# ========== ZAMAN KONTROLÜ ==========
+def check_business_hours():
+    """Sabah 8 - akşam 8 arası çalışır"""
+    now = datetime.datetime.now()
+    hour = now.hour
+    # Sabah 8 (8) ile akşam 8 (20) arası
+    if 8 <= hour < 20:
+        return True
+    else:
+        return False
+
+def wait_until_morning():
+    """Sabah 8'e kadar bekle"""
+    now = datetime.datetime.now()
+    target = now.replace(hour=8, minute=0, second=0, microsecond=0)
+    if now.hour >= 20:  # Akşam 8'den sonraysa
+        target = target + datetime.timedelta(days=1)  # Yarın sabaha bekle
+    
+    wait_seconds = (target - now).total_seconds()
+    print(f"😴 Bot şu anda çalışma saatleri dışında. Sabah 8'de başlamak için {wait_seconds/3600:.1f} saat bekleyecek.")
+    time.sleep(wait_seconds)
+
+# Ana çalışma döngüsü
+while True:
+    if check_business_hours():
+        print("✅ Çalışma saatleri içindeyiz. Bot başlatılıyor...")
+        break  # Botu başlat
+    else:
+        wait_until_morning()
+        
 import os
 import datetime
 import sqlite3
@@ -621,4 +655,5 @@ def main():
         logger.info("👋 Bot durduruldu.")
 
 if __name__ == "__main__":
+
     main()
