@@ -4,6 +4,25 @@ ANA BOT DOSYASI - PROFESYONEL VERSİYON
 Gelişmiş hata yönetimi, loglama ve optimizasyon
 Tüm modüller entegre edilmiştir
 """
+        
+import os
+import datetime
+import sqlite3
+import logging
+from typing import Optional, Dict, Any
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes
+
+# Kendi modüllerimiz
+from config import *
+import database as db
+import converters
+import utils
+from payments import (
+    show_packages, show_package_detail, start_payment,
+    confirm_payment, approve_payment, reject_payment, 
+    cancel_payment, back_to_main, init_payments_table
+)
 import datetime
 import time
 import os
@@ -38,26 +57,6 @@ while True:
         break  # Botu başlat
     else:
         wait_until_morning()
-        
-import os
-import datetime
-import sqlite3
-import logging
-from typing import Optional, Dict, Any
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes
-
-# Kendi modüllerimiz
-from config import *
-import database as db
-import converters
-import utils
-from payments import (
-    show_packages, show_package_detail, start_payment,
-    confirm_payment, approve_payment, reject_payment, 
-    cancel_payment, back_to_main, init_payments_table
-)
-
 # Loglama ayarları
 logging.basicConfig(
     level=logging.INFO,
@@ -657,3 +656,4 @@ def main():
 if __name__ == "__main__":
 
     main()
+
